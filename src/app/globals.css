@@ -1,0 +1,21 @@
+@import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
+
+@theme {
+  --color-background: #f8f9fa;
+  --color-card: #ffffff;
+  --color-card-hover: #f1f5f9;
+  --color-border: #cbd5e1;
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #475569;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+}
+
+/* Smooth transitions for interactive elements */
+.transition-smooth {
+  transition: all 0.3s ease-in-out;
+}
