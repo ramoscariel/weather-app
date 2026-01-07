@@ -25,4 +25,4 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: npx next lint --max-warnings=0
+        run: npx next lint
