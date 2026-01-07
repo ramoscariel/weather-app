@@ -25,4 +25,4 @@ jobs:
         run: npm ci
 
       - name: Run ESLint
-        run: ESLINT_USE_FLAT_CONFIG=false npx eslint . --ext .js,.jsx,.ts,.tsx
+        run: npx eslint . --ext .js,.jsx,.ts,.tsx
