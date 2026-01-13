@@ -81,17 +81,6 @@ jobs:
           artifact_name: 'zap-baseline-report'
           rules_file_name: '.zap/rules.tsv'
 
-      - name: Upload ZAP Scan Reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: zap-scan-reports
-          path: |
-            zap-baseline-report.html
-            zap-baseline-report.json
-            zap-baseline-report.md
-          retention-days: 30
-
       - name: Stop Next.js server
         if: always()
         run: |
