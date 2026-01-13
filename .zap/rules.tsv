@@ -1,0 +1,35 @@
+# ZAP Baseline Scan Rules Configuration
+# Format: RULE_ID	LEVEL	[CUSTOM_MESSAGE]
+# Levels: IGNORE, INFO, WARN, FAIL
+#
+# Common Rule IDs:
+# 10020 - X-Frame-Options Header Not Set
+# 10021 - X-Content-Type-Options Header Missing
+# 10023 - Information Disclosure - Debug Error Messages
+# 10027 - Information Disclosure - Suspicious Comments
+# 10054 - Cookie Without SameSite Attribute
+# 10055 - CSP: Wildcard Directive
+# 10056 - X-Debug-Token Information Leak
+# 10098 - Cross-Domain Misconfiguration
+# 40012 - Cross Site Scripting (Reflected)
+# 40014 - Cross Site Scripting (Persistent)
+# 40016 - Cross Site Scripting (Persistent) - Prime
+# 40017 - Cross Site Scripting (Persistent) - Spider
+# 90022 - Application Error Disclosure
+
+# Security headers - treat as warnings for development, failures for production
+10020	WARN	X-Frame-Options header not set
+10021	WARN	X-Content-Type-Options header missing
+10054	WARN	Cookie without SameSite attribute
+
+# XSS vulnerabilities - always fail
+40012	FAIL	Cross Site Scripting (Reflected) detected
+40014	FAIL	Cross Site Scripting (Persistent) detected
+
+# Information disclosure - treat as info unless sensitive
+10023	INFO	Debug error messages found
+10027	IGNORE	Suspicious comments found
+90022	INFO	Application error disclosure
+
+# CSP issues
+10055	WARN	CSP contains wildcard directive

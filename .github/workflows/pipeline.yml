@@ -31,6 +31,11 @@ jobs:
     name: Dynamic Security Analysis (ZAP DAST)
     runs-on: ubuntu-latest
     needs: eslint
+    permissions:
+      contents: read
+      actions: read
+      security-events: write
+      issues: write
 
     steps:
       - name: Checkout code
@@ -48,15 +53,49 @@ jobs:
       - name: Build Next.js application
         run: npm run build
 
+      - name: Verify build output
+        run: |
+          echo "Checking build directory..."
+          ls -la .next || echo "Build directory not found!"
+
       - name: Start Next.js server
         run: |
+          echo "Starting Next.js server in background..."
           npm start &
+          SERVER_PID=$!
+          echo "SERVER_PID=$SERVER_PID" >> $GITHUB_ENV
           echo "Waiting for server to be ready..."
           npx wait-on http://localhost:3000 --timeout 60000
+          echo "Server is ready on port 3000"
+
+      - name: Verify server is responding
+        run: |
+          curl -f http://localhost:3000 || (echo "Server not responding!" && exit 1)
 
       - name: Run ZAP Baseline Scan
         uses: zaproxy/action-baseline@v0.12.0
         with:
           target: 'http://localhost:3000'
-          fail_action: false
-          allow_issue_writing: false
+          fail_action: true
+          allow_issue_writing: true
+          artifact_name: 'zap-baseline-report'
+          rules_file_name: '.zap/rules.tsv'
+
+      - name: Upload ZAP Scan Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: zap-scan-reports
+          path: |
+            zap-baseline-report.html
+            zap-baseline-report.json
+            zap-baseline-report.md
+          retention-days: 30
+
+      - name: Stop Next.js server
+        if: always()
+        run: |
+          if [ ! -z "$SERVER_PID" ]; then
+            echo "Stopping server with PID $SERVER_PID"
+            kill $SERVER_PID || true
+          fi
