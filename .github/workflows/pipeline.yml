@@ -33,7 +33,7 @@ jobs:
     needs: eslint
     permissions:
       contents: read
-      actions: read
+      actions: write
       security-events: write
       issues: write
 
