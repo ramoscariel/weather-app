@@ -19,6 +19,15 @@ export default [
           jsx: true,
         },
       },
+      globals: {
+        // Browser globals
+        console: "readonly",
+        fetch: "readonly",
+        // Node.js globals
+        process: "readonly",
+        // React globals (for JSX)
+        React: "readonly",
+      },
     },
     plugins: {
       "@typescript-eslint": typescript,
@@ -28,10 +37,19 @@ export default [
       "react-hooks": reactHooks,
     },
     rules: {
+      // Disable base no-unused-vars and use TypeScript version
+      "no-unused-vars": "off",
+
       // TypeScript rules
       "@typescript-eslint/no-explicit-any": "error",
       "@typescript-eslint/explicit-function-return-type": "off",
-      "@typescript-eslint/no-unused-vars": "warn",
+      "@typescript-eslint/no-unused-vars": [
+        "warn",
+        {
+          "argsIgnorePattern": "^_",
+          "varsIgnorePattern": "^_",
+        }
+      ],
 
       // React rules
       "react/react-in-jsx-scope": "off",

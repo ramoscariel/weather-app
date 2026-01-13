@@ -15,7 +15,7 @@ L.Icon.Default.mergeOptions({
 });
 
 interface MapComponentProps {
-  onLocationSelect: (lat: number, lon: number) => void;
+  onLocationSelect: (_lat: number, _lon: number) => void;
 }
 
 // Component to handle map click events
@@ -23,8 +23,8 @@ function MapClickHandler({
   onLocationSelect,
   setMarkerPosition,
 }: {
-  onLocationSelect: (lat: number, lon: number) => void;
-  setMarkerPosition: (pos: [number, number]) => void;
+  onLocationSelect: (_lat: number, _lon: number) => void;
+  setMarkerPosition: (_pos: [number, number]) => void;
 }) {
   useMapEvents({
     click: (e) => {
