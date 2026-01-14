@@ -55,5 +55,5 @@ jobs:
         with:
           target: http://localhost:3000
           fail_action: true
-          allow_issue_writing: false   # ✅ FIX
-          artifact_name: zap-report    # ✅ simpler name
+          allow_issue_writing: false
+          rules_file_name: ".zap/rules.tsv"
