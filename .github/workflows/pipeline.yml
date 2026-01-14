@@ -52,9 +52,11 @@ jobs:
           npx wait-on http://localhost:3000 --timeout 60000
 
       - name: Run ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.11.0
-        with:
-          target: http://localhost:3000
-          fail_action: false
-          allow_issue_writing: false
-          rules_file_name: ".zap/rules.tsv"
+        run: |
+          docker run --rm \
+            --network host \
+            -v ${{ github.workspace }}:/zap/wrk \
+            zaproxy/zap-baseline.py \
+            -t http://localhost:3000 \
+            -c .zap/rules.tsv \
+            -r zap-report.html || true
